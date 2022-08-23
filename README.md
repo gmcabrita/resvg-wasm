@@ -4,12 +4,13 @@ Basic WASM bindings for [resvg](https://github.com/RazrFalcon/resvg) for Deno.
 
 ## render()
 
-Take an SVG string and return a typed array with the data encoded as a PNG.
+Take an SVG string and resolves with a typed array with the data encoded as a
+PNG.
 
 ```ts
 import { render } from "https://deno.land/x/resvg_wasm/mod.ts";
 
-const data = render(`<?xml version="1.0" encoding="UTF-8"?>
+const data = await render(`<?xml version="1.0" encoding="UTF-8"?>
 <svg width="820px" height="312px" viewBox="0 0 820 312" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>Testing</title>
     <g id="testing" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
