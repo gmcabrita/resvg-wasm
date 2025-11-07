@@ -9,12 +9,13 @@ fn get_opts() -> usvg::Options {
   fontdb.load_font_data(
     include_bytes!("../fonts/JetBrainsMono-VariableFont_wght.ttf").to_vec(),
   );
+  fontdb.load_font_data(include_bytes!("../fonts/MarkerFelt.ttf").to_vec());
   fontdb.set_serif_family("Bitter");
   fontdb.set_sans_serif_family("Inter");
   fontdb.set_monospace_family("JetBrains Mono");
   usvg::Options {
     fontdb,
-    font_family: "Bitter".to_string(),
+    font_family: "Marker Felt".to_string(),
     ..Default::default()
   }
 }
@@ -30,7 +31,8 @@ fn render_as_slice(svg: &str) -> Result<Vec<u8>, js_sys::Error> {
     tiny_skia::Pixmap::new(pixmap_size.width(), pixmap_size.height())
       .unwrap_throw();
   let transform = tiny_skia::Transform::default();
-  resvg::render(&rtree, usvg::FitTo::Original, transform, pixmap.as_mut()).unwrap_throw();
+  resvg::render(&rtree, usvg::FitTo::Original, transform, pixmap.as_mut())
+    .unwrap_throw();
   Ok(pixmap.encode_png().unwrap())
 }
 
@@ -45,7 +47,8 @@ mod tests {
 
   #[test]
   fn test_render() {
-    let actual = render_as_slice(r##"<?xml version="1.0" encoding="UTF-8"?>
+    let actual = render_as_slice(
+      r##"<?xml version="1.0" encoding="UTF-8"?>
     <svg width="820px" height="312px" viewBox="0 0 820 312" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
         <title>Testing</title>
         <g id="testing" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -57,7 +60,8 @@ mod tests {
                 <tspan x="502" y="233">Monospace</tspan>
             </text>
         </g>
-    </svg>"##);
+    </svg>"##,
+    );
     assert!(actual.is_ok());
     let actual = actual.unwrap();
     assert_eq!(actual.len(), 9651);
